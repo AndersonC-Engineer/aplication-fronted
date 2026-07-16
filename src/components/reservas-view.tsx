@@ -115,17 +115,17 @@ export default function ReservasView() {
 
   const handleStatusChange = async (id: number, newStatus: string) => {
     setActionError('')
+    const label = newStatus === 'Confirmed' ? 'aprobada' : newStatus === 'Cancelled' ? 'rechazada' : 'actualizada'
+    setReservas(prev => prev.filter(r => r.id !== id))
+    setToastMessage({ type: 'success', text: `Reserva ${label} correctamente` })
+    setTimeout(() => setToastMessage(null), 3000)
     try {
-      const res = await bookingService.updateStatus(id, newStatus)
-      fetchData()
-      const label = newStatus === 'Confirmed' ? 'aprobada' : newStatus === 'Cancelled' ? 'rechazada' : 'actualizada'
-      setToastMessage({ type: 'success', text: `Reserva ${label} correctamente` })
-      setTimeout(() => setToastMessage(null), 3000)
+      await bookingService.updateStatus(id, newStatus)
     } catch (error: any) {
-      console.error('Error changing status:', error)
-      setActionError(error.message || 'Error al cambiar el estado de la reserva')
+      setActionError(error.message || 'Error al cambiar el estado')
       setToastMessage({ type: 'error', text: error.message || 'Error al cambiar el estado' })
       setTimeout(() => setToastMessage(null), 4000)
+      fetchData()
     }
   }
 
