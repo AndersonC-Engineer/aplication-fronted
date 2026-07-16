@@ -62,7 +62,7 @@ export const bookingService = {
    * @returns {Promise<object>} Respuesta con la reserva actualizada.
    */
   updateStatus: async (id, status) => {
-    return api.put(`/bookings/${id}`, { status });
+    return api.put(`/bookings/${id}/status`, { status });
   },
 
   /**
