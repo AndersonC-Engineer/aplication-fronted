@@ -7,29 +7,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Node modules
-node_modules/
-Backend/node_modules/
-Frontend/node_modules/
-
-# Environment files
-.env
-Backend/.env
-
-# Production build directories
-dist/
-dist-ssr/
-Frontend/dist/
-Frontend/dist-ssr/
-
-# Temp / backup folders
-Backend - copia/
-temp_partner_repo/
+node_modules
+dist
+dist-ssr
+*.local
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea/
+.idea
 .DS_Store
 *.suo
 *.ntvs*
