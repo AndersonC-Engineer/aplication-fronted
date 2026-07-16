@@ -114,10 +114,8 @@ export default function ReservasView() {
   const handleStatusChange = async (id: number, newStatus: string) => {
     setActionError('')
     try {
-      const res = await bookingService.updateStatus(id, newStatus)
-      if (res.success) {
-        fetchData()
-      }
+      await bookingService.updateStatus(id, newStatus)
+      fetchData()
     } catch (error: any) {
       console.error('Error changing status:', error)
       setActionError(error.message || 'Error al cambiar el estado de la reserva')
