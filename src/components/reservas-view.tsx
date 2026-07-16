@@ -111,14 +111,21 @@ export default function ReservasView() {
     }
   }
 
+  const [toastMessage, setToastMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
   const handleStatusChange = async (id: number, newStatus: string) => {
     setActionError('')
     try {
-      await bookingService.updateStatus(id, newStatus)
+      const res = await bookingService.updateStatus(id, newStatus)
       fetchData()
+      const label = newStatus === 'Confirmed' ? 'aprobada' : newStatus === 'Cancelled' ? 'rechazada' : 'actualizada'
+      setToastMessage({ type: 'success', text: `Reserva ${label} correctamente` })
+      setTimeout(() => setToastMessage(null), 3000)
     } catch (error: any) {
       console.error('Error changing status:', error)
       setActionError(error.message || 'Error al cambiar el estado de la reserva')
+      setToastMessage({ type: 'error', text: error.message || 'Error al cambiar el estado' })
+      setTimeout(() => setToastMessage(null), 4000)
     }
   }
 
@@ -365,6 +372,17 @@ export default function ReservasView() {
           Nueva Reserva
         </button>
       </div>
+
+      {/* Toast de feedback */}
+      {toastMessage && (
+        <div className={`fixed bottom-6 right-6 z-50 px-5 py-3 rounded-xl shadow-2xl text-sm font-bold animate-in slide-in-from-bottom-4 duration-300 ${
+          toastMessage.type === 'success' 
+            ? 'bg-green-500/90 text-white border border-green-400/30' 
+            : 'bg-red-500/90 text-white border border-red-400/30'
+        }`}>
+          {toastMessage.type === 'success' ? '✓' : '✗'} {toastMessage.text}
+        </div>
+      )}
 
       {/* TARJETAS DE ESTADÍSTICAS */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
